@@ -3,10 +3,8 @@ package com.npp_telda.dir_regions.controller;
 import com.npp_telda.dir_regions.mapper.DirectoryMapper;
 import com.npp_telda.dir_regions.model.Directory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,23 +20,23 @@ public class DirectoryController {
         return directoryMapper.getAllDirectories();
     }
 
-    @GetMapping("/3")
-    public Directory getDirectory(Long id) {
-        return directoryMapper.getDirectoryById(3L);
+    @GetMapping("/id/{id}")
+    public Directory getDirectory(@PathVariable("id") Long id) {
+        return directoryMapper.getDirectoryById(id);
     }
 
-    @GetMapping("/{title}")
-    public List<Directory> getByTitle(String title) {
+    @GetMapping("/title/{title}")
+    public List<Directory> getByTitle(@PathVariable("title") String title) {
         return directoryMapper.getDirectoriesByTitle(title);
     }
 
-    @GetMapping("/{shortTitle}")
-    public List<Directory> getByShortTitle(String shortTitle) {
+    @GetMapping("/shortTitle/{shortTitle}")
+    public List<Directory> getByShortTitle(@PathVariable("shortTitle") String shortTitle) {
         return directoryMapper.getDirectoriesByShortTitle(shortTitle);
     }
 
-//    @PostMapping("/add")
-//    public void addDirectory(String title, String shortTitle) {
-//        directoryMapper.addDirectory(title, shortTitle);
-//    }
+    @PostMapping("/add")
+    public void addDir(@RequestBody Directory directory) {
+        directoryMapper.addDirectory(directory);
+       }
 }

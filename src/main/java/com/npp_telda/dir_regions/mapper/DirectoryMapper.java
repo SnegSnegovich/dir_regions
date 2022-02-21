@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.*;
 import java.util.List;
 
 public interface DirectoryMapper {
-    @Select("select * from Directory")
+    @Select("Select id, title, shortTitle from directory")
     List<Directory> getAllDirectories();
 
     @Results({
@@ -15,20 +15,23 @@ public interface DirectoryMapper {
             @Result(property = "shortTitle", column = "shortTitle")
     })
 
-    @Select("select title as title,shortTitle as shortTitle,id as id from Directory where id=#{id}")
+    @Select("SELECT * FROM Directory WHERE id = #{id}")
     Directory getDirectoryById(@Param("id") Long id);
 
-    @Select("select * from Directory where title like concat('%',#{title},'%')")
+    @Select("SELECT * FROM Directory WHERE title = #{title}")
     List<Directory> getDirectoriesByTitle(@Param("title") String title);
 
-    @Select("select * from Directory where shortTitle like concat('%',#{shortTitle},'%')")
+//    @Select("select id, title, shortTitle from Directory where title = #{title}")
+//    List<Directory> getDirectoriesByTitle(@Param("title") String title);
+
+    @Select("SELECT * FROM Directory WHERE shortTitle = #{shortTitle}")
     List<Directory> getDirectoriesByShortTitle(@Param("shortTitle") String shortTitle);
 
     @Insert({"insert into Directory(title,shortTitle) values(#{title},#{shortTitle})"})
-    @SelectKey(statement = "select last_insert_id()", keyProperty = "id", before = false, resultType = Integer.class)
-    Integer addDirectory(Directory Directory);
+    @SelectKey(statement = "select last_insert_id()", keyProperty = "id", before = false, resultType = Long.class)
+    void addDirectory(Directory Directory);
 
-    @Update("update Directory set title=#{title},shortTitle=#{shortTitle} where id=#{id}")
+    @Update("update Directory set title=#{title},shortTitlertTitle=#{shortTitlertTitle} where id=#{id}")
     Integer updateDirectoryById(Directory Directory);
 
     @Delete("delete from Directory where id=#{id}")
