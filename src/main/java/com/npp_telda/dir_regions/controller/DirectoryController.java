@@ -3,6 +3,7 @@ package com.npp_telda.dir_regions.controller;
 import com.npp_telda.dir_regions.mapper.DirectoryMapper;
 import com.npp_telda.dir_regions.model.Directory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,26 +18,31 @@ public class DirectoryController {
     @Autowired
     DirectoryMapper directoryMapper;
 
+    @Cacheable
     @GetMapping("/all")
     public List<Directory> getAll() {
         return directoryMapper.findAll();
     }
 
+    @Cacheable
     @GetMapping("/{id}")
     public Directory getDirectory(@PathVariable("id") Long id) {
         return directoryMapper.getDirectoryById(id);
     }
 
+    @Cacheable
     @GetMapping("/title/{title}")
     public List<Directory> getByTitle(@PathVariable("title") String title) {
         return directoryMapper.getDirectoriesByTitle(title);
     }
 
+    @Cacheable
     @GetMapping("/shortTitle/{shortTitle}")
     public List<Directory> getByShortTitle(@PathVariable("shortTitle") String shortTitle) {
         return directoryMapper.getDirectoriesByShortTitle(shortTitle);
     }
 
+    @Cacheable
     @PostMapping()
     public Directory createDirectory(@RequestBody Directory directory) {
         int id = directoryMapper.insert(directory);
