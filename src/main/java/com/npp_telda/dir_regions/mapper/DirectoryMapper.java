@@ -6,34 +6,27 @@ import org.apache.ibatis.annotations.*;
 import java.util.List;
 
 public interface DirectoryMapper {
-    @Select("Select id, title, shortTitle from directory")
-    List<Directory> getAllDirectories();
 
-    @Results({
-            @Result(property = "id", column = "id"),
-            @Result(property = "title", column = "title"),
-            @Result(property = "shortTitle", column = "shortTitle")
-    })
+    @Select("Select * from directory")
+    List<Directory> findAll();
 
     @Select("SELECT * FROM Directory WHERE id = #{id}")
-    Directory getDirectoryById(@Param("id") Long id);
+    Directory getDirectoryById(Long id);
 
     @Select("SELECT * FROM Directory WHERE title = #{title}")
-    List<Directory> getDirectoriesByTitle(@Param("title") String title);
-
-//    @Select("select id, title, shortTitle from Directory where title = #{title}")
-//    List<Directory> getDirectoriesByTitle(@Param("title") String title);
+    List<Directory> getDirectoriesByTitle(String title);
 
     @Select("SELECT * FROM Directory WHERE shortTitle = #{shortTitle}")
-    List<Directory> getDirectoriesByShortTitle(@Param("shortTitle") String shortTitle);
+    List<Directory> getDirectoriesByShortTitle(String shortTitle);
 
-    @Insert({"insert into Directory(title,shortTitle) values(#{title},#{shortTitle})"})
-    @SelectKey(statement = "select last_insert_id()", keyProperty = "id", before = false, resultType = Long.class)
-    void addDirectory(Directory Directory);
+    @Insert("insert into Directory(id, title, shortTitle) " +
+            " values (#{id}, #{title}, #{shortTitle})")
+    int insert(Directory directory);
 
-    @Update("update Directory set title=#{title},shortTitlertTitle=#{shortTitlertTitle} where id=#{id}")
-    Integer updateDirectoryById(Directory Directory);
+    @Update("Update Directory set title = #{title}, " +
+            " shortTitle = #{shortTitle} where id=#{id}")
+    int update(Directory directory);
 
-    @Delete("delete from Directory where id=#{id}")
-    Integer deleteDirectoryById(@Param("id") Long id);
+    @Delete("DELETE FROM Directory WHERE id = #{id}")
+    int deleteById(long id);
 }
